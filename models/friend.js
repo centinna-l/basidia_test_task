@@ -7,7 +7,7 @@ const Friend = sequelize.define("friend_tables", {
         primaryKey: true,
     },
     friend_ids: {
-        type: Sequelize.ARRAY(Sequelize.STRING),
+        type: Sequelize.STRING,
     }
 });
 

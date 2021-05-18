@@ -38,7 +38,7 @@ exports.signup = async (req, res) => {
                     user_email: email
                 }
             });
-            console.log(count);
+            // console.log(count);
             if (count == 0) {
                 User.create({
                     user_id: id,

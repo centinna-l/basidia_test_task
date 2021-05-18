@@ -11,11 +11,17 @@ exports.getAllRequest = async (req, res) => {
                 user_id: user_id
             }
         }).then(async (post) => {
-            // console.log(post);
+            console.log(post);
             let req_ids = [];
             post.forEach(element => {
                 req_ids.push(element.request_ids);
             });
+            console.log(req_ids);
+            if (req_ids.length === 0) {
+                return res.status(200).json({
+                    "message": "No Friend Requests"
+                });
+            }
             // console.log(req_ids);
             // let req_list = [];
             // req_ids.forEach(async (element) => {
@@ -104,5 +110,31 @@ exports.sendRequests = async (req, res) => {
         })
     } catch (error) {
         return res.status(200).json({ error })
+    }
+}
+
+exports.deleteRequest = async (req, res) => {
+    let user_id = req.uid;
+    let pfid = req.params.pfid
+    console.log(pfid)
+    try {
+        FriendRequests.destroy({
+            where: {
+                [Op.and]: [{ user_id: user_id }, { request_ids: pfid }]
+            }
+        }).then((data) => {
+            return res.status(200).json({
+                "message": "deleted"
+            });
+        }).catch((e) => {
+            return res.status(404).json({
+                "error": "Entry Not found"
+            });
+        });
+
+    } catch (error) {
+        return res.status(503).json({
+            "error": "Something went wrong"
+        });
     }
 }
