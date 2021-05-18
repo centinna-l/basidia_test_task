@@ -155,12 +155,9 @@ exports.updateProfile = async (req, res) => {
 
     const updatedData = req.body;
 
-
-
-
     //check for email
     console.log(updatedData.user_email);
-    if (updatedData.email) {
+    if (updatedData.user_email) {
         const count = await User.count({
             where: {
                 user_email: updatedData.user_email

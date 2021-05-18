@@ -43,9 +43,10 @@ exports.getAllPosts = async (req, res) => {
 
 exports.createPost = async (req, res) => {
     let user_id = req.uid;
-    const { post_title, post_desc, post_image } = req.body
+    const { post_title, post_desc } = req.body
     let post_id = makeid(32);
     console.log(post_id);
+    let pathToImage = req.pathname + req.filename
     if (!(post_title && post_desc)) {
         return res.status(403).json({
             "error": "Enter all the fields"
@@ -56,7 +57,7 @@ exports.createPost = async (req, res) => {
             post_id: post_id,
             user_id: user_id,
             post_title: post_title,
-            post_image: post_image,
+            post_image: pathToImage,
             post_desc: post_desc,
         }).then(async (post) => {
             return res.status(200).json({
