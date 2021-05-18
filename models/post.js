@@ -22,7 +22,7 @@ const Post = sequelize.define("post_tables", {
         type: Sequelize.INTEGER
     },
     comments: {
-        type: Sequelize.ARRAY(Sequelize.INTEGER),
+        type: Sequelize.ARRAY(Sequelize.STRING),
     },
 });
 
