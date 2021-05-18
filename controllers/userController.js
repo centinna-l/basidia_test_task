@@ -1,8 +1,6 @@
-const express = require('express');
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
-const sequelize = require("../db");
 
 //To Make a random ID for the user
 const makeid = (length) => {

@@ -14,7 +14,6 @@ const User = sequelize.define("user_tables", {
     },
     user_password: {
         type: Sequelize.STRING,
-
     },
     user_dob: {
         type: Sequelize.DATE,

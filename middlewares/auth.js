@@ -11,8 +11,8 @@ module.exports = (req, res, next) => {
     }
     try {
         const decoded = jwt.verify(token, "1234567890");
-        console.log("Decoded JWT")
-        console.log(decoded.uid)
+        // console.log("Decoded JWT")
+        // console.log(decoded.uid)
         req.uid = decoded.uid;
         next();
     } catch (error) {
