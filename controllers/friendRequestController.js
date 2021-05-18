@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const FriendRequests = require("../models/friend_requests");
 const { Op } = require("sequelize");
+const Friend = require("../models/friend");
 
 exports.getAllRequest = async (req, res) => {
     let user_id = req.uid;
@@ -138,3 +139,44 @@ exports.deleteRequest = async (req, res) => {
         });
     }
 }
+
+exports.acceptRequest = async (req, res) => {
+    let user_id = req.uid;
+    let pfid = req.params.pfid;
+    try {
+        Friend.create({
+            user_id: user_id,
+            friend_id: pfid
+        }).then((friend) => {
+            console.log(friend);
+            FriendRequests.destroy({
+                where: {
+                    [Op.and]: [{ user_id: user_id }, { request_ids: pfid }]
+                }
+            }).then((update) => {
+                return res.status(500).json({ "messaage": "Added to your Friend List" });
+            }).catch((e) => { return res.status(500).json({ "error": "Not Able to Delete from Request Table" }) });
+        }).catch((e) => { return res.status(500).json({ "error": "Not able to Add Friend" }) })
+
+    } catch (error) {
+        return res.status(500).json({ "error": "TRY CATCH ERROR" })
+    }
+}
+
+// const updateOrCreate=async(model, where, newItem) =>{
+//     // First try to find the record
+//     return model
+//         .findOne({ where: where })
+//         .then(function (foundItem) {
+//             if (!foundItem) {
+//                 // Item not found, create a new one
+//                 return model
+//                     .create(newItem)
+//                     .then(function (item) { return { item: item, created: true }; })
+//             }
+//             // Found an item, update it
+//             return model
+//                 .update(newItem, { where: where })
+//                 .then(function (item) { return { item: item, created: false } });
+//         }
+// }

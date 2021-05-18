@@ -3,11 +3,11 @@ const sequelize = require("../db");
 
 const Friend = sequelize.define("friend_tables", {
     user_id: {
-        type: Sequelize.toString,
+        type: Sequelize.STRING,
         primaryKey: true,
     },
-    friend_ids: {
-        type: Sequelize.STRING,
+    friend_id: {
+        type: Sequelize.STRING
     }
 });
 
