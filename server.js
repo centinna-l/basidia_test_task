@@ -6,6 +6,8 @@ const PORT = 8000;
 
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
+const friendReqRoutes = require('./routes/friend-request');
+const friendRouts = require('./routes/friend');
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -23,6 +25,9 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/friend-request', friendReqRoutes);
+app.use('/api/friend', friendRouts);
+
 
 
 app.get('/', (req, res) => {

@@ -15,3 +15,9 @@
     - Windows 10
 - Code Environment
     - Windows Subsystem for Linux version 2.
+
+# Features
+-  Authentication - Login / Register / Forgot Password / Profile Update with profile pic
+- Friends - Send a friend request / Accept & Reject friend request / Remove Friend / View My Friends / View Friends of Friends / View Mutual Friends
+- Search For Friends
+- Posts - Add post / Delete post With Images, likes and Comments
