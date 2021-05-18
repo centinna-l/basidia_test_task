@@ -4,14 +4,13 @@ const sequelize = require("../db");
 const Friend = sequelize.define("friend_tables", {
     user_id: {
         type: Sequelize.STRING,
-        primaryKey: true,
     },
     friend_id: {
         type: Sequelize.STRING
     }
 });
 
-Friend.sync({ alter: false }).then(() => {
+Friend.sync({ alter: true }).then(() => {
     console.log("Friend table created");
 });
 
