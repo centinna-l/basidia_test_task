@@ -1,17 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-var upload = multer();
 const userController = require("../controllers/userController");
 const auth = require('../middlewares/auth');
+const path = require('path')
+
+const multer = require('multer');
+//Storage location
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        req.pathname = "./uploads/"
+        cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+        req.filename = Date.now() + path.extname(file.originalname);
+        cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+    }
+});
+
+let uploads = multer({ storage: storage });
 
 
 
-router.post('/signup', userController.signup);
-router.post('/login', userController.login);
+router.post('/signup', uploads.single("image"), userController.signup);
+router.post('/login', uploads.none(), userController.login);
 router.put('/forgotpassword', userController.forgotPassword);
 router.get('/getprofile', auth, userController.getProfile);
-router.put('/updateprofile', auth, userController.updateProfile);
+router.put('/updateprofile', uploads.single("image"),auth, userController.updateProfile);
+router.post('/check', uploads.single("image"), userController.checkImage);
 module.exports = router;
 
 // Using Pool - Client just for testing of PostgresSQL connections.

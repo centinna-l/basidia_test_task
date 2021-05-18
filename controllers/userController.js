@@ -2,6 +2,7 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require('bcrypt');
 
+
 //To Make a random ID for the user
 const makeid = (length) => {
     var result = "";
@@ -18,6 +19,7 @@ exports.signup = async (req, res) => {
     const { name, email, phone, dob, gender, password } = req.body;
     //Make a Random ID
     let id = makeid(32);
+    let pathToImage = req.pathname + req.filename;
 
     if (!(id && name && email && phone && dob && gender && password)) {
         console.log(id);
@@ -44,7 +46,8 @@ exports.signup = async (req, res) => {
                     user_email: email,
                     user_dob: new Date(dob.split("-").reverse().join("-")),
                     gender: gender,
-                    user_password: hash
+                    user_password: hash,
+                    image: pathToImage
                 }).then(async (user) => {
                     // console.log(user)
                     return res.status(200).json({
@@ -147,28 +150,42 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
     let id = req.uid;
     console.log(req.uid);
-    //Name
-    //Check if email exists or not if exists then return err otherwise update
-    //dob
+    let pathToImage = req.pathname + req.filename;
     //update profile image
+
     const updatedData = req.body;
+
+
+
 
     //check for email
     console.log(updatedData.user_email);
-    const count = await User.count({
-        where: {
-            user_email: updatedData.user_email
+    if (updatedData.email) {
+        const count = await User.count({
+            where: {
+                user_email: updatedData.user_email
+            }
+        });
+        if (count != 0) {
+            return res.status(200).json({
+                "error": "Email is already associated with another account, try using a different email"
+            })
         }
-    });
-    if (count != 0) {
-        return res.status(200).json({
-            "error": "Email is already associated with another account, try using a different email"
-        })
     }
 
-    //if image is there - simulating as a path file for now
-    let data = {}
-    data = { ...updatedData }
+    let data = {};
+    if (req.file) {
+        data = {
+            ...updatedData,
+            image: pathToImage
+        }
+    } else {
+        data = {
+            ...updatedData
+        }
+    }
+
+
     User.update(data, {
         where: {
             user_id: id
@@ -179,5 +196,14 @@ exports.updateProfile = async (req, res) => {
         })
     }).catch((e) => {
         return res.status(404).json({ "error": "Cannot Update Profile at the moment" })
+    });
+}
+
+exports.checkImage = async (req, res) => {
+    let pathToImage = req.pathname + req.filename;
+    let name = req.body.name;
+    res.json({
+        "pathToImage": req.pathname + req.filename,
+        name
     });
 }
